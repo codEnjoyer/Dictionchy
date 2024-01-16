@@ -9,7 +9,7 @@ namespace Dictionchy
 {
     class Program
     {
-        private static readonly ITelegramBotClient Bot = new TelegramBotClient("6980249909:AAHigO2SmcMmd0AoAqtdHRAmD5SKBlUe8tM");
+        private static readonly ITelegramBotClient Bot = new TelegramBotClient(DotEnv.Token);
         private static readonly CommandManager CommandManager = new();
 
         private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
@@ -57,6 +57,7 @@ namespace Dictionchy
 
         private static void Main()
         {
+            DotEnv.Load(EnvFileType.Json);
             var cts = new CancellationTokenSource();
             var cancellationToken = cts.Token;
             var receiverOptions = new ReceiverOptions();
