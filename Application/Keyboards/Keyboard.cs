@@ -5,14 +5,9 @@ namespace Dictionchy.Application.Keyboards
 {
     public abstract class Keyboard
     {
-        private CommandManager _manager = new CommandManager();
+        private CommandManager _manager = new();
         public InlineKeyboardMarkup GetKeyBoard()
         {
-            //var bot = new TelegramBotClient("") { Timeout = TimeSpan.FromSeconds(10) };
-            //bot.AnswerInlineQueryAsync += async (object sc, Telegram.Bot.Args.CallbackQueryEventArgs ev) =>
-            //{
-            //    _manager.GetCommandByName(ev.CallbackQuery.Data).Execute();
-            //};
             return new(Buttons);
         }
 
