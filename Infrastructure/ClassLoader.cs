@@ -23,6 +23,7 @@ public static class ClassLoader
         {
             return default;
         }
+
         await using var fs = File.Open(pathToFile, FileMode.Open);
         return await JsonSerializer.DeserializeAsync<T>(fs, new JsonSerializerOptions {WriteIndented = true});
     }

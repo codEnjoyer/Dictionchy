@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Telegram.Bot.Types;
+﻿using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
@@ -9,7 +6,7 @@ namespace Dictionchy.Application.Commands
     {
         public string Name => "/empty";
 
-        public string Description => "";
+        public string? Description => "";
 
         public CommandResult Execute(Update update = null)
         {

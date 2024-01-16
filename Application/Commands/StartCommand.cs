@@ -1,9 +1,4 @@
 ﻿using Dictionchy.Application.Keyboards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
@@ -12,7 +7,7 @@ namespace Dictionchy.Application.Commands
     {
         public string Name => "/start";
 
-        public string Description => "";
+        public string? Description => "";
 
         public CommandResult Execute(Update update = null)
         {

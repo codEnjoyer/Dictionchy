@@ -1,8 +1,6 @@
-﻿using Dictionchy.Application.Commands;
-using Dictionchy.Infrastructure;
-using System.Reflection;
+﻿using Dictionchy.Infrastructure;
 
-namespace Dictionchy
+namespace Dictionchy.Domain
 {
     internal class Pet
     {

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telegram.Bot.Types;
+﻿using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
     public class CommandManager
     {
         internal ICommand LastCommand { get; private set; }
-        private Dictionary<string, ICommand> commands = new Dictionary<string, ICommand> //TODO: переделать, чтобы команды не нужно было добавлять в словарь
+        private Dictionary<string, ICommand> commands = new()//TODO: переделать, чтобы команды не нужно было добавлять в словарь
         {
             {"/start", new StartCommand()},
             { "/empty", new EmptyCommand() }
