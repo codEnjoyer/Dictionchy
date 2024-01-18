@@ -4,6 +4,6 @@ namespace Dictionchy.Application.Keyboards
 {
     public class PetKeyboard : Keyboard
     {
-        public override KeyboardButton[] Buttons => new KeyboardButton[] { "/petactions", "/petinfo" };
+        public override KeyboardButton[] Buttons => new KeyboardButton[] { "/petactions", "/petstate" };
     }
 }
