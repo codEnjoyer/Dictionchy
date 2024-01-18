@@ -5,8 +5,6 @@ namespace Dictionchy.Application.Commands
 {
     public class StartCommand : ICommand
     {
-        public string Name => "/start";
-
         public string? Description => "";
 
         public CommandResult Execute(Update? update = null)

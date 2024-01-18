@@ -18,7 +18,7 @@ public static class ClassLoader
     /// </example>
     public static async Task<T?> Load<T>(string folder, string filename)
     {
-        var pathToFile = Path.Combine(folder, filename, ".json");
+        var pathToFile = Path.Combine(folder, filename + ".json");
         if (!File.Exists(pathToFile))
         {
             return default;

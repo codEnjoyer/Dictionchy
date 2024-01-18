@@ -21,7 +21,7 @@ public static class ClassDumper
     /// </example>
     public static async void Dump<T>(T obj, string folder, string filename)
     {
-        var pathToFile = Path.Combine(folder, filename, ".json");
+        var pathToFile = Path.Combine(folder, filename + ".json");
         await using var fs = File.Open(pathToFile, FileMode.OpenOrCreate);
         await JsonSerializer.SerializeAsync(fs, obj, new JsonSerializerOptions {WriteIndented = true});
     }

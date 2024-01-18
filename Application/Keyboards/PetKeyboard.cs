@@ -1,4 +1,4 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Dictionchy.Application.Keyboards
 {

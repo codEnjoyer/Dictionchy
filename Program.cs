@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Polling;
@@ -21,8 +21,7 @@ namespace Dictionchy
         private static Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception,
             CancellationToken cancellationToken)
         {
-            var msg = JsonSerializer.Serialize(exception);
-            Console.WriteLine(msg);
+            Console.WriteLine(exception.Message);
             return Task.CompletedTask;
         }
 

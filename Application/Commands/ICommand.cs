@@ -1,4 +1,4 @@
-﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
@@ -6,8 +6,6 @@ namespace Dictionchy.Application.Commands
     {
         public CommandResult Execute(Update? update = null);
         
-        public string Name { get; }
         public string? Description { get; }
     }
-    
 }
