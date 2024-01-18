@@ -59,11 +59,13 @@ namespace Dictionchy.Domain
         public static Pet GetOrCreatePet(string name, string id)
         {
             var relativePath = @"..\Resources"; //TODO: в случае перемещения файла тут возникнет ошибка, надо бы сделать более гибким
+            Directory.CreateDirectory(relativePath);
             var folder = Path.GetFullPath(relativePath);
             var pet = ClassLoader.Load<Pet>(folder, id).Result;
             if (pet is null)
             {
-                return new Pet(name);
+                pet = new Pet(name);
+                ClassDumper.Dump<Pet>(pet, folder, id);
             }
             return pet;
         }
@@ -81,6 +83,11 @@ namespace Dictionchy.Domain
         public override string ToString()
         {
             return $"Pet<Name: {Name}, Satiety: {Satiety}, Cleanness: {Cleanness}, Sleepiness: {Sleepiness}>";
+        }
+
+        public string GetStateString()
+        {
+            return $"Состояние {Name}:\n\nСытость: {Satiety}/100\nЧистота: {Cleanness}/100\nБодрость: {Sleepiness}/100";
         }
 
         public string ToJson()

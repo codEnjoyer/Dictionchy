@@ -6,7 +6,7 @@ namespace Dictionchy.Application.Keyboards
     {
         public override InlineKeyboardButton[] Buttons => new[]
         {
-            InlineKeyboardButton.WithCallbackData(text: "Создать питомца", callbackData: "/setName"), 
+            InlineKeyboardButton.WithCallbackData(text: "Создать питомца", callbackData: "/askName"), 
             InlineKeyboardButton.WithCallbackData(text: "Что это за бот?", callbackData: "/empty"), //help
         };
     }
