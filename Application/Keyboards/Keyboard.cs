@@ -1,15 +1,12 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
-using Dictionchy.Application.Commands;
 
 namespace Dictionchy.Application.Keyboards
 {
     public abstract class Keyboard
     {
-        private CommandManager _manager = new();
-        public ReplyKeyboardMarkup GetKeyBoard()
-        {
-            return new(Buttons);
-        }
+        public IReplyMarkup GetKeyboard() => Buttons.Length > 0
+            ? new ReplyKeyboardMarkup(Buttons)
+            : new ReplyKeyboardRemove();
 
         public abstract KeyboardButton[] Buttons { get; }
     }

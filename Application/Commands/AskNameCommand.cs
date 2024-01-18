@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types;
+﻿using Dictionchy.Application.Keyboards;
+using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
@@ -6,9 +7,7 @@ namespace Dictionchy.Application.Commands
     {
         public string? Description => null;
 
-        public CommandResult Execute(Update? update = null)
-        {
-            return new CommandResult("Введите имя питомца");
-        }
+        public CommandResult Execute(Update? update = null) => 
+            new("Введите имя питомца");
     }
 }

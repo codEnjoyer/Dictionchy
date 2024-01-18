@@ -10,9 +10,9 @@ namespace Dictionchy.Application.Commands
         {
             {"/start", new StartCommand()},
             {"/empty", new EmptyCommand()},
-            {"/askName", new AskNameCommand()},
-            {"/createPet", new CreatePetCommand()},
-            {"/petState", new PetStateCommand()}
+            {"/askname", new AskNameCommand()},
+            {"/createpet", new CreatePetCommand()},
+            {"/petstate", new PetStateCommand()}
         };
 
         internal ICommand GetCommandByName(string name)

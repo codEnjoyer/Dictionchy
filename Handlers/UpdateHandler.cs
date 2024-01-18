@@ -37,12 +37,9 @@ namespace Dictionchy.Handlers
             }
 
             var commandResult = CommandManager.ExecuteCommand(commandName ?? "/empty", update);
-            if (message != null)
-            {
-                await botClient.SendTextMessageAsync(message.Chat,
-                    commandResult.Message,
-                    replyMarkup: commandResult.ReplyKeyboard?.GetKeyBoard());
-            }
+            await botClient.SendTextMessageAsync(message!.Chat,
+                commandResult.Message,
+                replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());
         }
 
         public static async Task HandleCallbackQueryAsync
@@ -56,7 +53,7 @@ namespace Dictionchy.Handlers
             {
                 await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,
                     callbackResult.Message,
-                    replyMarkup: callbackResult.ReplyKeyboard?.GetKeyBoard(),
+                    replyMarkup: callbackResult.ReplyKeyboard?.GetKeyboard(),
                     cancellationToken: cancellationToken);
             }
         }
