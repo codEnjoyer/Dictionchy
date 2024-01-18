@@ -7,7 +7,7 @@ namespace Dictionchy.Handlers
 {
     public static class UpdateHandler
     {
-        private static CommandManager commandManager = new CommandManager();
+        private static readonly CommandManager CommandManager = new();
         public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
             CancellationToken cancellationToken)
         {
@@ -31,12 +31,12 @@ namespace Dictionchy.Handlers
         {
             var message = update.Message;
             var commandName = message?.Text?.ToLower();
-            if (commandManager.LastCommand?.Name == "/setName")
+            if (CommandManager.LastCommand is AskNameCommand)
             {
                 commandName = "/createPet";
             }
 
-            var commandResult = commandManager.ExecuteCommand(commandName ?? "/empty", update);
+            var commandResult = CommandManager.ExecuteCommand(commandName ?? "/empty", update);
             if (message != null)
             {
                 await botClient.SendTextMessageAsync(message.Chat,
@@ -51,8 +51,8 @@ namespace Dictionchy.Handlers
             CancellationToken cancellationToken)
         {
             var callbackQuery = update.CallbackQuery;
-            var callbackResult = commandManager.ExecuteCommand(callbackQuery?.Data ?? "/empty");
-            if (callbackQuery != null && callbackQuery.Message != null)
+            var callbackResult = CommandManager.ExecuteCommand(callbackQuery?.Data ?? "/empty");
+            if (callbackQuery is {Message: not null})
             {
                 await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,
                     callbackResult.Message,

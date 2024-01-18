@@ -4,6 +4,6 @@ namespace Dictionchy.Application.Keyboards
 {
     public class StartKeyboard : Keyboard
     {
-        public override KeyboardButton[] Buttons => new KeyboardButton[] { "/setName", "/help"};
+        public override KeyboardButton[] Buttons => new KeyboardButton[] { "/askName", "/help"};
     }
 }
