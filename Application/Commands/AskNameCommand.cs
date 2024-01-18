@@ -8,7 +8,7 @@ namespace Dictionchy.Application.Commands
 
         public string? Description => null;
 
-        public CommandResult Execute(Update update = null)
+        public CommandResult Execute(Update? update = null)
         {
             return new CommandResult("Введите имя питомца");
         }

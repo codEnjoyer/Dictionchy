@@ -16,6 +16,8 @@ public static class DotEnv
 
     private static readonly Dictionary<string, PropertyInfo> Properties = new();
 
+
+    #pragma warning disable CS8618 
     static DotEnv()
     {
         foreach (var property in typeof(DotEnv).GetProperties())
@@ -78,7 +80,7 @@ public static class DotEnv
         }
 
         using var stream = assembly.GetManifestResourceStream(resourcePath);
-        using var reader = new StreamReader(stream);
+        using var reader = new StreamReader(stream ?? Stream.Null);
         return reader.ReadToEnd().Trim();
     }
 }

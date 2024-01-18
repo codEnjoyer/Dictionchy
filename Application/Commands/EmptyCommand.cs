@@ -8,7 +8,7 @@ namespace Dictionchy.Application.Commands
 
         public string? Description => "";
 
-        public CommandResult Execute(Update update = null)
+        public CommandResult Execute(Update? update = null)
         {
             return new CommandResult("Эта функциональность пока не реализованна");
         }
