@@ -30,17 +30,46 @@ namespace Dictionchy.Handlers
         public static async Task HandleMessageAsync(ITelegramBotClient botClient, Update update)
         {
             var message = update.Message;
-            var commandName = message?.Text?.ToLower();
-            var isCommand = commandName.StartsWith("/");
+            var messageText = message?.Text?.ToLower();
+
+            switch (messageText)
+            {
+                case "создать питомца":
+                    messageText = "/askname";
+                    break;
+                case "помощь":
+                    messageText = "/help";
+                    break;
+                case "действия с питомцем":
+                    messageText = "/petactions";
+                    break;
+                case "состояние питомца":
+                    messageText = "/petstate";
+                    break;
+                case "покормить":
+                    messageText = "/feed";
+                    break;
+                case "помыть":
+                    messageText = "/clean";
+                    break;
+                case "уложить спать":
+                    messageText = "/sleep";
+                    break;
+                case "поговорить":
+                    messageText = "/speak";
+                    break;
+            }
+
+            var isCommand = messageText.StartsWith("/");
             if (CommandManager.LastCommand is AskNameCommand && !isCommand)
             {
-                commandName = "/createpet";
+                messageText = "/createpet";
                 isCommand = true;
             }
 
             if (isCommand) 
             {
-                var commandResult = CommandManager.ExecuteCommand(commandName ?? "/empty", update);
+                var commandResult = CommandManager.ExecuteCommand(messageText ?? "/empty", update);
                 await botClient.SendTextMessageAsync(message!.Chat,
                     commandResult.Message,
                     replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());
