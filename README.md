@@ -33,3 +33,5 @@
 
 Добавление новых [клавиатур](https://github.com/codEnjoyer/Dictionchy/blob/master/Application/Keyboards/Keyboard.cs)
 с новыми командами
+
+#### Начинали работу в [этом репозитории](https://github.com/denisnumb/tg-tamagochi-bot)
