@@ -41,30 +41,4 @@
             return next;
         }
     }
-
-    public class IndexedProperty<TState>
-    {
-        readonly Action<TState, IStateActions> SetAction;
-        readonly Func<TState, IStateActions> GetFunc;
-
-        public IndexedProperty(
-            Func<TState, IStateActions> getFunc,
-            Action<TState, IStateActions> setAction)
-        {
-            GetFunc = getFunc;
-            SetAction = setAction;
-        }
-
-        public IStateActions this[TState state]
-        {
-            get
-            {
-                return GetFunc(state);
-            }
-            set
-            {
-                SetAction(state, value);
-            }
-        }
-    }
 }
