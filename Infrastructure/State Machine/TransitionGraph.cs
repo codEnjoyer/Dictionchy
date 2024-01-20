@@ -1,30 +1,30 @@
 ﻿namespace State_Machine
 {
-    public class TransitionGraph<TEvent>
+    public class TransitionGraph<TEvent, TState>
     {
-        private Dictionary<ValueTuple<BaseState, TEvent>, BaseState> _transitions = new ();
+        private Dictionary<ValueTuple<TState, TEvent>, TState> _transitions = new ();
 
-        public void RemoveTransition(TEvent trigger, BaseState curState)
+        public void RemoveTransition(TEvent trigger, TState curState)
         {
-            _transitions.Remove(new ValueTuple<BaseState, TEvent>(curState, trigger));
+            _transitions.Remove(new ValueTuple<TState, TEvent>(curState, trigger));
         }
 
-        public void RegisterOrChangeTransition(TEvent trigger, BaseState curState, BaseState nextState)
+        public void RegisterOrChangeTransition(TEvent trigger, TState curState, TState nextState)
         {
-            _transitions[new ValueTuple<BaseState, TEvent>(curState, trigger)] = nextState;
+            _transitions[new ValueTuple<TState, TEvent>(curState, trigger)] = nextState;
         }
 
-        public BaseState GetNextState(TEvent trigger, BaseState curState) 
+        public TState GetNextState(TEvent trigger, TState curState) 
         {
-            var transition = new ValueTuple<BaseState, TEvent>(curState, trigger);
+            var transition = new ValueTuple<TState  , TEvent>(curState, trigger);
             if (_transitions.ContainsKey(transition))
                 return _transitions[transition];
             return curState;
         }
 
-        public bool HasTransition(TEvent trigger, BaseState curState)
+        public bool HasTransition(TEvent trigger, TState curState)
         {
-            return _transitions.ContainsKey(new ValueTuple<BaseState, TEvent>(curState, trigger));
+            return _transitions.ContainsKey(new ValueTuple<TState, TEvent>(curState, trigger));
         }
     }
 }
