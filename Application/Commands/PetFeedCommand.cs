@@ -9,13 +9,16 @@ using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
-    internal class PetStateCommand : ICommand
+    internal class PetFeedCommand : ICommand
     {
-        public CommandResult Execute(Update update = null)
+        public CommandResult Execute(Update? update = null)
         {
             var pet = Pet.GetPetByUserId(update.Message.From.Id);
             if (pet != null)
-                return new CommandResult(pet.GetStateString(), new PetKeyboard());
+            {
+                pet.Eat();
+                return new CommandResult("Вы покормили питомца", new PetKeyboard());
+            }
             return new CommandResult("У вас нет питомца", new StartKeyboard());
         }
     }

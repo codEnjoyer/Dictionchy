@@ -31,15 +31,20 @@ namespace Dictionchy.Handlers
         {
             var message = update.Message;
             var commandName = message?.Text?.ToLower();
-            if (CommandManager.LastCommand is AskNameCommand)
+            var isCommand = commandName.StartsWith("/");
+            if (CommandManager.LastCommand is AskNameCommand && !isCommand)
             {
-                commandName = "/createPet";
+                commandName = "/createpet";
+                isCommand = true;
             }
 
-            var commandResult = CommandManager.ExecuteCommand(commandName ?? "/empty", update);
-            await botClient.SendTextMessageAsync(message!.Chat,
-                commandResult.Message,
-                replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());
+            if (isCommand) 
+            {
+                var commandResult = CommandManager.ExecuteCommand(commandName ?? "/empty", update);
+                await botClient.SendTextMessageAsync(message!.Chat,
+                    commandResult.Message,
+                    replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());
+            }
         }
 
         public static async Task HandleCallbackQueryAsync

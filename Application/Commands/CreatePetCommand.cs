@@ -6,13 +6,16 @@ namespace Dictionchy.Application.Commands
 {
     public class CreatePetCommand : ICommand
     {
-        public string? Description => "Создаёт питомца для нового пользователя";
-
         public CommandResult Execute(Update? update = null)
         {
-            if (update != null && update.Message?.Text != null && update.CallbackQuery != null)
+            if (update != null && update.Message?.Text != null)
             {
-                var pet = Pet.GetOrCreatePet(update.Message.Text, update.CallbackQuery.From.Id.ToString());
+                var userId = update.Message.From.Id;
+
+                if (Pet.GetPetByUserId(userId) != null)
+                    return new CommandResult("У вас уже есть питомец", new PetKeyboard());
+
+                Pet.CreatePet(update.Message.Text, userId);
                 return new CommandResult("Поздравляю, у вас появился питомец!", new PetKeyboard());
             }
             return new CommandResult("Что-то пошло не так...");
