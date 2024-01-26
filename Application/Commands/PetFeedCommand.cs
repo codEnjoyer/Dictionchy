@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Dictionchy.Infrastructure;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
-    internal class PetFeedCommand : ICommand
+    internal class PetFeedCommand : SingletonEquals, ICommand
     {
         public CommandResult Execute(Update? update = null)
         {

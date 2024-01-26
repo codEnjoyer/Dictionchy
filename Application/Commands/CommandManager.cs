@@ -6,7 +6,7 @@ namespace Dictionchy.Application.Commands
     {
         internal ICommand? LastCommand { get; private set; }
 
-        private Dictionary<string, ICommand> commands = new()//TODO: переделать, чтобы команды не нужно было добавлять в словарь
+        private Dictionary<string, ICommand> commands = new() //TODO: переделать, чтобы команды не нужно было добавлять в словарь
         {
             {"/start", new StartCommand()},
             {"/empty", new EmptyCommand()},

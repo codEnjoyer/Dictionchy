@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
+using Dictionchy.Infrastructure;
+
 namespace Dictionchy.Application.Commands
 {
-    internal class PetCleanCommand : ICommand
+    internal class PetCleanCommand : SingletonEquals, ICommand
     {
         public CommandResult Execute(Update? update = null)
         {

@@ -4,8 +4,12 @@
     {
         private Dictionary<string, IStateActions> _states = new();
         public string? CurrentState { get; private set; }
-        public TransitionGraph<TEvent, string> Transitions = new();
-        
+        public TransitionGraph<TEvent, string> Transitions { get; }
+
+        public StateMachine()
+        {
+            Transitions = new();
+        }
 
         public void RegisterStates() 
         {

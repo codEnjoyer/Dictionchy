@@ -2,6 +2,9 @@
 {
     public interface IStateActions
     {
+        /// <summary>
+        /// Выполняется перед входом в состояние
+        /// </summary>
         public void OnEnter();
         /// <summary>
         /// Выполняется перед выходом из состояния
@@ -22,13 +25,9 @@
             this.onExit = onExit;
         }
 
-        /// <summary>
-        /// Выполняется перед входом в состояние
-        /// </summary>
+        
         public void OnEnter() => onEnter(EnterParameters);
-        /// <summary>
-        /// Выполняется перед выходом из состояния
-        /// </summary>
+
         public void OnExit() => onExit(ExitParameters);
     }
 

@@ -1,10 +1,11 @@
 using Dictionchy.Application.Keyboards;
 using Dictionchy.Domain;
 using Telegram.Bot.Types;
+using Dictionchy.Infrastructure;
 
 namespace Dictionchy.Application.Commands
 {
-    public class CreatePetCommand : ICommand
+    public class CreatePetCommand : SingletonEquals, ICommand
     {
         public CommandResult Execute(Update? update = null)
         {

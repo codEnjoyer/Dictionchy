@@ -24,9 +24,12 @@ namespace Dictionchy.Application
             return machine;
         }
 
-        private static void RegisterTransitions()
+        private static void RegisterTransitions(StateMachine<ICommand, State> machine)
         {
-
+            machine.Transitions.RegisterOrChangeTransition(
+                new CreatePetCommand(), 
+                State.Start, 
+                State.CreatePet);
         }
 
         private static void RegisterStatesActions(StateMachine<ICommand, State> machine)
