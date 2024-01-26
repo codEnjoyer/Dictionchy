@@ -20,9 +20,10 @@ namespace Dictionchy.Application
 
         public static StateMachine<ICommand, State> RegisterStateMachine()
         {
-            var machine = new StateMachine<ICommand, State>();
+            var machine = new StateMachine<ICommand, State>(State.Start);
             machine.RegisterStates();
             RegisterStatesActions(machine);
+            RegisterTransitions(machine);
             return machine;
         }
 
@@ -59,7 +60,8 @@ namespace Dictionchy.Application
 
         private static void RegisterStatesActions(StateMachine<ICommand, State> machine)
         {
-            //machine[State.CreatePet] = new StateActions();
         }
     }
+
+    internal class EmptyParameters { }
 }

@@ -1,13 +1,23 @@
-﻿using Dictionchy.Infrastructure;
+﻿using Dictionchy.Application.Keyboards;
+using Dictionchy.Domain;
+using Dictionchy.Infrastructure;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
-    internal class PetCreatedCommand : SingletonEquals, ICommand
+    internal class PetCreatedCommand : ICommand
     {
-        public CommandResult Execute(Update? update = null)
+        public Update Context { get; set; }
+        public ITelegramBotClient Client { get; set; }
+
+        public async void Execute()
         {
-            return new CommandResult("Ваш питомец успешно создан!");
+            var message = Context.Message;
+            await Client.SendTextMessageAsync(message!.Chat,
+                "Ваш питомец успешно создан!", 
+                replyMarkup: new PetKeyboard().GetKeyboard());
+
         }
     }
 }

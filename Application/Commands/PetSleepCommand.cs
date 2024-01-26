@@ -1,21 +1,22 @@
 ﻿using Dictionchy.Application.Keyboards;
 using Dictionchy.Domain;
 using Dictionchy.Infrastructure;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
-    internal class PetSleepCommand : SingletonEquals, ICommand
+    internal class PetSleepCommand : ICommand
     {
-        public CommandResult Execute(Update? update = null)
+        public Update Context { get; set; }
+        public ITelegramBotClient Client { get; set; }
+        public async void Execute()
         {
-            var pet = Pet.GetPetByUserId(update.Message.From.Id);
-            if (pet != null)
-            {
-                pet.Sleep(1);
-                return new CommandResult("Вы уложили питомца спать", new PetKeyboard());
-            }
-            return new CommandResult("У вас нет питомца", new StartKeyboard());
+            var pet = Pet.GetPetByUserId(Context.Message.From.Id);
+            pet.Sleep(1);
+            await Client.SendTextMessageAsync(Context.Message!.Chat,
+                    "Вы уложили питомца спать",
+                    replyMarkup: new PetKeyboard().GetKeyboard());
         }
     }
 }

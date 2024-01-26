@@ -5,36 +5,36 @@
         /// <summary>
         /// Выполняется перед входом в состояние
         /// </summary>
-        public void OnEnter();
+        public void OnEnterExecute();
         /// <summary>
         /// Выполняется перед выходом из состояния
         /// </summary>
-        public void OnExit();
+        public void OnExitExecute();
     }
 
     public class StateActions<TEnterParameters, TExitParameters>: IStateActions
     {
-        private readonly Action<TEnterParameters> onEnter;
-        private readonly Action<TExitParameters> onExit;
+        private Action<TEnterParameters> OnEnter;
+        private Action<TExitParameters> OnExit;
         public TEnterParameters? EnterParameters { get; set; }
         public TExitParameters? ExitParameters { get; set; }
 
         public StateActions(Action<TEnterParameters> onEnter, Action<TExitParameters> onExit) 
         { 
-            this.onEnter = onEnter;
-            this.onExit = onExit;
+            this.OnEnter = onEnter;
+            this.OnExit = onExit;
         }
 
         
-        public void OnEnter() => onEnter(EnterParameters);
+        public void OnEnterExecute() => OnEnter(EnterParameters);
 
-        public void OnExit() => onExit(ExitParameters);
+        public void OnExitExecute() => OnExit(ExitParameters);
     }
 
     public class EmptyStateAction : IStateActions
     {
-        public void OnEnter() { }
+        public void OnEnterExecute() { }
 
-        public void OnExit() { }
+        public void OnExitExecute() { }
     }
 }

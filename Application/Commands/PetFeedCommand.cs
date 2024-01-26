@@ -6,20 +6,21 @@ using System.Linq;
 using System.Text;
 using Dictionchy.Infrastructure;
 using Telegram.Bot.Types;
+using Telegram.Bot;
 
 namespace Dictionchy.Application.Commands
 {
-    internal class PetFeedCommand : SingletonEquals, ICommand
+    internal class PetFeedCommand : ICommand
     {
-        public CommandResult Execute(Update? update = null)
+        public Update Context { get; set ; }
+        public ITelegramBotClient Client { get; set; }
+        public async void Execute()
         {
-            var pet = Pet.GetPetByUserId(update.Message.From.Id);
-            if (pet != null)
-            {
-                pet.Eat();
-                return new CommandResult("Вы покормили питомца", new PetKeyboard());
-            }
-            return new CommandResult("У вас нет питомца", new StartKeyboard());
+            var pet = Pet.GetPetByUserId(Context.Message.From.Id);
+            pet.Eat();
+            await Client.SendTextMessageAsync(Context.Message!.Chat,
+                    "Вы покормили питомца",
+                    replyMarkup: new PetKeyboard().GetKeyboard());
         }
     }
 }

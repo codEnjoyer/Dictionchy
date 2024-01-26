@@ -1,17 +1,30 @@
 ﻿using Dictionchy.Application.Keyboards;
 using Dictionchy.Domain;
 using Dictionchy.Infrastructure;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
     public class AskNameCommand : SingletonEquals, ICommand
     {
-        public CommandResult Execute(Update? update = null)
+        public Update Context { get; set; }
+        public ITelegramBotClient Client { get; set; }
+
+        public async void Execute()
         {
-            if (Pet.GetPetByUserId(update.Message.From.Id) == null)
-                return new("Введите имя питомца");
-            return new("У вас уже есть питомец.", new PetKeyboard());
+            var message = Context.Message;
+            if (Pet.GetPetByUserId(message.From.Id) == null)
+            {
+                await Client.SendTextMessageAsync(message!.Chat,
+                    "Введите имя питомца");
+            }
+            else
+            {
+                await Client.SendTextMessageAsync(message!.Chat,
+                    "У вас уже есть питомец.",
+                    replyMarkup: new PetKeyboard().GetKeyboard());
+            }
         }
     }
 }

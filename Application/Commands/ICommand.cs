@@ -1,9 +1,12 @@
+using State_Machine;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
 {
-    public interface ICommand
+    public interface ICommand: ITrigger
     {
-        public CommandResult Execute(Update? update = null);
+        public Update Context { get; set; }
+        public ITelegramBotClient Client { get; set; }
     }
 }

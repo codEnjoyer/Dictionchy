@@ -1,3 +1,4 @@
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Application.Commands
@@ -19,18 +20,40 @@ namespace Dictionchy.Application.Commands
             {"/sleep", new PetSleepCommand()},
         };
 
-        internal ICommand GetCommandByName(string name)
+        public ICommand GetCommandByContext(ITelegramBotClient client, Update update)
         {
-            return commands[name];
-        }
-        public CommandResult ExecuteCommand(string name, Update? update = null)
-
-        {
-            if (!commands.ContainsKey(name)) 
-                return commands["/empty"].Execute(update);
-
-            LastCommand = commands[name];
-            return commands[name].Execute(update);
+            var message = update.Message;
+            var messageText = message?.Text?.ToLower();
+            switch (messageText)
+            {
+                case "создать питомца":
+                    messageText = "/askname";
+                    break;
+                case "помощь":
+                    messageText = "/help";
+                    break;
+                case "действия с питомцем":
+                    messageText = "/petactions";
+                    break;
+                case "состояние питомца":
+                    messageText = "/petstate";
+                    break;
+                case "покормить":
+                    messageText = "/feed";
+                    break;
+                case "помыть":
+                    messageText = "/clean";
+                    break;
+                case "уложить спать":
+                    messageText = "/sleep";
+                    break;
+                case "поговорить":
+                    messageText = "/speak";
+                    break;
+            }
+            if (messageText.StartsWith("/") && commands.ContainsKey(messageText))
+                return commands[messageText];
+            return null;
         }
     }
 }

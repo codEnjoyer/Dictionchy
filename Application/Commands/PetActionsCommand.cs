@@ -6,14 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using Dictionchy.Infrastructure;
+using Telegram.Bot;
 
 namespace Dictionchy.Application.Commands
 {
-    internal  class PetActionsCommand : SingletonEquals, ICommand
-    {
-        public CommandResult Execute(Update? update = null)
+    internal  class PetActionsCommand : ICommand
+    { 
+        public Update Context { get; set; }
+        public ITelegramBotClient Client { get; set; }
+
+        public async void Execute()
         {
-            return new CommandResult("Выберите действие с питомцем", new PetActionsKeyboard());
+            var message = Context.Message;
+            await Client.SendTextMessageAsync(message!.Chat,
+                    "Выберите действие с питомцем",
+                    replyMarkup: new PetActionsKeyboard().GetKeyboard());
         }
     }
 }

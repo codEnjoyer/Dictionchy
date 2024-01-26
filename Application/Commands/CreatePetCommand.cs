@@ -2,24 +2,33 @@ using Dictionchy.Application.Keyboards;
 using Dictionchy.Domain;
 using Telegram.Bot.Types;
 using Dictionchy.Infrastructure;
+using Telegram.Bot;
 
 namespace Dictionchy.Application.Commands
 {
-    public class CreatePetCommand : SingletonEquals, ICommand
+    public class CreatePetCommand : ICommand
     {
-        public CommandResult Execute(Update? update = null)
+        public Update Context { get; set; }
+        public ITelegramBotClient Client { get; set; }
+
+        public async void Execute()
         {
-            if (update != null && update.Message?.Text != null)
+            var message = Context?.Message;
+            if (message?.Text != null)
             {
-                var userId = update.Message.From.Id;
-
+                var userId = message.From.Id;
                 if (Pet.GetPetByUserId(userId) != null)
-                    return new CommandResult("У вас уже есть питомец", new PetKeyboard());
-
-                Pet.CreatePet(update.Message.Text, userId);
-                return new CommandResult("Поздравляю, у вас появился питомец!", new PetKeyboard());
+                {
+                    await Client.SendTextMessageAsync(message!.Chat,
+                    "У вас уже есть питомец");
+                }
+                else
+                {
+                    Pet.CreatePet(message.Text, userId);
+                    await Client.SendTextMessageAsync(message!.Chat,
+                    "Поздравляю, у вас появился питомец!", replyMarkup: new PetKeyboard().GetKeyboard());
+                }
             }
-            return new CommandResult("Что-то пошло не так...");
         }
     }
 }
