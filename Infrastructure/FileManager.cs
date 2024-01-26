@@ -1,13 +1,8 @@
 ﻿using Dictionchy.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dictionchy.Infrastructure
 {
-    internal static class FileManager
+    public static class FileManager
     {
         public static string GetPath()
         {
@@ -16,7 +11,16 @@ namespace Dictionchy.Infrastructure
             return Path.GetFullPath(relativePath);
         }
 
-        public static void DumpPetToFile(Pet pet) 
-            => ClassDumper.Dump(pet, GetPath(), pet.OwnerId.ToString());
+        public static void SavePetToFile(Pet pet)
+        {
+            var db = new FileDB<Pet>();
+            db.Save(pet, GetPath(), pet.OwnerId.ToString());
+        }
+
+        public static Pet? GetPetFromFile(string filename)
+        {
+            var db = new FileDB<Pet>();
+            return db.Get(GetPath(), filename);
+        }
     }
 }

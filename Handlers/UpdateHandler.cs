@@ -69,8 +69,7 @@ namespace Dictionchy.Handlers
 
             if (isCommand) 
             {
-                
-                var commandResult = CommandManager.ExecuteCommand(commandName, update);
+                var commandResult = CommandManager.ExecuteCommand(messageText, update);
                 await botClient.SendTextMessageAsync(message!.Chat,
                     commandResult.Message,
                     replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());

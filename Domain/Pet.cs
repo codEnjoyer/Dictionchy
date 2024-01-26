@@ -1,12 +1,10 @@
 using Dictionchy.Infrastructure;
-using Telegram.Bot.Types;
 
 namespace Dictionchy.Domain
 {
-    internal class Pet
+    public class Pet
     {
-        private static IDatabaseProvider<Pet> _provider = new FileDB<Pet>(); //TODO: добавить зависимость в DI-контейнер
-        public int maxSatiety = 100; 
+        public int maxSatiety = 100;
         public int maxCleanness = 100;
         public int maxSleepiness = 100;
 
@@ -22,18 +20,16 @@ namespace Dictionchy.Domain
         public int Cleanness => CalculateState(LastCleanTime, maxCleanness);
         public int Sleepiness => CalculateState(LastSleepTime, maxSleepiness);
 
-        public static Pet? GetPetByUserId(long userId) => ClassLoader.Load<Pet>(FileManager.GetPath(), userId.ToString()).Result;
 
-        public static Pet? GetPetByUserId(long userId) => _provider.Get(GetPath(), userId.ToString()).Result;
+        public static Pet? GetPetByUserId(long userId) => FileManager.GetPetFromFile(userId.ToString());
 
         public static Pet CreatePet(string name, long userId)
         {
             var pet = new Pet(name, userId);
-            FileManager.DumpPetToFile(pet);
+            FileManager.SavePetToFile(pet);
             return pet;
         }
 
-        private void DumpToFile() => _provider.Save(this, GetPath(), OwnerId.ToString());
         public Pet(string name, long ownerId)
         {
             Name = name;
@@ -47,7 +43,8 @@ namespace Dictionchy.Domain
 
         public string GetStateString()
         {
-            return $"Состояние {Name}:\n\nСытость: {Satiety}/{maxSatiety}\nЧистота: {Cleanness}/{maxCleanness}\nБодрость: {Sleepiness}/{maxSleepiness}";
+            return
+                $"Состояние {Name}:\n\nСытость: {Satiety}/{maxSatiety}\nЧистота: {Cleanness}/{maxCleanness}\nБодрость: {Sleepiness}/{maxSleepiness}";
         }
 
         public void Eat()
@@ -56,7 +53,7 @@ namespace Dictionchy.Domain
         public void Clean()
             => DoPetAction(() => LastCleanTime = DateTime.Now);
 
-        public void Sleep(int hours) 
+        public void Sleep(int hours)
             => DoPetAction(() => LastSleepTime = DateTime.Now);
 
         public void Speak()
@@ -67,14 +64,13 @@ namespace Dictionchy.Domain
         private void DoPetAction(Action petAction)
         {
             petAction.Invoke();
-            FileManager.DumpPetToFile(this);
+            FileManager.SavePetToFile(this);
         }
 
         private int CalculateState(DateTime lastStateChangeTime, int maxStateValue)
         {
-            var state = maxStateValue - (int)(DateTime.Now - lastStateChangeTime).TotalHours * 5;
+            var state = maxStateValue - (int) (DateTime.Now - lastStateChangeTime).TotalHours * 5;
             return state > 0 ? state : 0;
         }
-
     }
 }

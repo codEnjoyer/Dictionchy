@@ -3,9 +3,9 @@ using Dictionchy.Domain;
 
 namespace Dictionchy.Infrastructure;
 
-internal class FileDB<T>: IDatabaseProvider<T>
+public class FileDB<T>: IDatabaseProvider<T>
 {
-    public async Task<T?> Get(params string[] args)
+    public T? Get(params string[] args)
     {
         var folder = args[0];
         var filename = args[1];
@@ -15,8 +15,8 @@ internal class FileDB<T>: IDatabaseProvider<T>
             return default;
         }
 
-        await using var fs = File.Open(pathToFile, FileMode.Open);
-        return await JsonSerializer.DeserializeAsync<T>(fs, new JsonSerializerOptions { WriteIndented = true });
+        using var fs = File.Open(pathToFile, FileMode.Open);
+        return JsonSerializer.Deserialize<T>(fs, new JsonSerializerOptions { WriteIndented = true });
     }
 
     public async void Save(T obj, params string[] args)
