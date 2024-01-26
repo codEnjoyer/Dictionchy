@@ -1,4 +1,4 @@
-﻿using Dictionchy.Application.Commands;
+using Dictionchy.Application.Commands;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
 using Telegram.Bot;
@@ -7,7 +7,7 @@ namespace Dictionchy.Handlers
 {
     public static class UpdateHandler
     {
-        private static readonly CommandManager CommandManager = new();
+        private static readonly CommandManager CommandManager = new(); //TODO: добавить в контейнер
         public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
             CancellationToken cancellationToken)
         {
@@ -69,7 +69,8 @@ namespace Dictionchy.Handlers
 
             if (isCommand) 
             {
-                var commandResult = CommandManager.ExecuteCommand(messageText ?? "/empty", update);
+                
+                var commandResult = CommandManager.ExecuteCommand(commandName, update);
                 await botClient.SendTextMessageAsync(message!.Chat,
                     commandResult.Message,
                     replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());
@@ -82,7 +83,7 @@ namespace Dictionchy.Handlers
             CancellationToken cancellationToken)
         {
             var callbackQuery = update.CallbackQuery;
-            var callbackResult = CommandManager.ExecuteCommand(callbackQuery?.Data ?? "/empty");
+            var callbackResult = CommandManager.ExecuteCommand(callbackQuery?.Data);
             if (callbackQuery is {Message: not null})
             {
                 await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,

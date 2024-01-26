@@ -18,11 +18,10 @@ namespace Dictionchy
             await UpdateHandler.HandleUpdateAsync(botClient, update, cancellationToken);
         }
 
-        private static Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception,
+        private static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception,
             CancellationToken cancellationToken)
         {
-            Console.WriteLine(exception.Message);
-            return Task.CompletedTask;
+            await ErrorHandler.HandleErrorAsync(botClient, exception, cancellationToken);
         }
 
         private static void Main()

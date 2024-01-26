@@ -1,16 +1,18 @@
-﻿using Dictionchy.Infrastructure;
+using Dictionchy.Infrastructure;
 using Telegram.Bot.Types;
 
 namespace Dictionchy.Domain
 {
     internal class Pet
     {
+        private static IDatabaseProvider<Pet> _provider = new FileDB<Pet>(); //TODO: добавить зависимость в DI-контейнер
         public int maxSatiety = 100; 
         public int maxCleanness = 100;
         public int maxSleepiness = 100;
 
         public long OwnerId { get; }
         public string Name { get; }
+
 
         public DateTime LastEatTime { get; set; }
         public DateTime LastCleanTime { get; set; }
@@ -22,6 +24,8 @@ namespace Dictionchy.Domain
 
         public static Pet? GetPetByUserId(long userId) => ClassLoader.Load<Pet>(FileManager.GetPath(), userId.ToString()).Result;
 
+        public static Pet? GetPetByUserId(long userId) => _provider.Get(GetPath(), userId.ToString()).Result;
+
         public static Pet CreatePet(string name, long userId)
         {
             var pet = new Pet(name, userId);
@@ -29,6 +33,7 @@ namespace Dictionchy.Domain
             return pet;
         }
 
+        private void DumpToFile() => _provider.Save(this, GetPath(), OwnerId.ToString());
         public Pet(string name, long ownerId)
         {
             Name = name;

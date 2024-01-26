@@ -1,4 +1,5 @@
 using Telegram.Bot.Types;
+using Dictionchy.Handlers;
 
 namespace Dictionchy.Application.Commands
 {
@@ -9,7 +10,6 @@ namespace Dictionchy.Application.Commands
         private Dictionary<string, ICommand> commands = new()//TODO: переделать, чтобы команды не нужно было добавлять в словарь
         {
             {"/start", new StartCommand()},
-            {"/empty", new EmptyCommand()},
             {"/askname", new AskNameCommand()},
             {"/createpet", new CreatePetCommand()},
             {"/petstate", new PetStateCommand()},
@@ -19,15 +19,10 @@ namespace Dictionchy.Application.Commands
             {"/sleep", new PetSleepCommand()},
         };
 
-        internal ICommand GetCommandByName(string name)
+        public CommandResult ExecuteCommand(string? name, Update? update = null)
         {
-            return commands[name];
-        }
-        public CommandResult ExecuteCommand(string name, Update? update = null)
-
-        {
-            if (!commands.ContainsKey(name)) 
-                return commands["/empty"].Execute(update);
+            if (name is null || !commands.ContainsKey(name)) 
+                throw new NotExistCommandException(update.Message.Chat);
 
             LastCommand = commands[name];
             return commands[name].Execute(update);
