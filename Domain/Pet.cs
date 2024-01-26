@@ -5,8 +5,10 @@ namespace Dictionchy.Domain
 {
     internal class Pet
     {
+        private static IDatabaseProvider<Pet> _provider = new FileDB<Pet>(); //TODO: добавить зависимость в DI-контейнер
         public long OwnerId { get; }
         public string Name { get; }
+
 
         public DateTime LastEatTime { get; set; }
         public DateTime LastCleanTime { get; set; }
@@ -24,7 +26,7 @@ namespace Dictionchy.Domain
             return Path.GetFullPath(relativePath);
         }
 
-        public static Pet? GetPetByUserId(long userId) => ClassLoader.Load<Pet>(GetPath(), userId.ToString()).Result;
+        public static Pet? GetPetByUserId(long userId) => _provider.Get(GetPath(), userId.ToString()).Result;
 
         public static Pet CreatePet(string name, long userId)
         {
@@ -33,7 +35,7 @@ namespace Dictionchy.Domain
             return pet;
         }
 
-        private void DumpToFile() => ClassDumper.Dump(this, GetPath(), OwnerId.ToString());
+        private void DumpToFile() => _provider.Save(this, GetPath(), OwnerId.ToString());
 
         private int CalculateState(DateTime lastStateChangeTime)
         {
