@@ -13,6 +13,7 @@ public enum EnvFileType
 public static class DotEnv
 {
     public static string Token { get; private set; }
+    public static string Resources { get; private set; }
 
     private static readonly Dictionary<string, PropertyInfo> Properties = new();
 
