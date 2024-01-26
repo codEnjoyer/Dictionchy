@@ -6,7 +6,7 @@ namespace Dictionchy.Application.Keyboards
     {
         public override KeyboardButton[] Buttons => new KeyboardButton[] 
         { 
-            "Действия с питомцем", "Состояние питомца" 
+            "Р”РµР№СЃС‚РІРёСЏ СЃ РїРёС‚РѕРјС†РµРј", "РЎРѕСЃС‚РѕСЏРЅРёРµ РїРёС‚РѕРјС†Р°" 
         };
     }
 }
