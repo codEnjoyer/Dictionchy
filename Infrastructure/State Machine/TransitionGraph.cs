@@ -16,9 +16,8 @@
 
         public TState GetNextState(TEvent trigger, TState curState) 
         {
-            var transition = new ValueTuple<TState  , TEvent>(curState, trigger);
-            if (_transitions.ContainsKey(transition))
-                return _transitions[transition];
+            if (HasTransition(trigger, curState))
+                return _transitions[new ValueTuple<TState, TEvent>(curState, trigger)];
             return curState;
         }
 

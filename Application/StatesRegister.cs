@@ -9,11 +9,13 @@ namespace Dictionchy.Application
         {
             Start,
             CreatePet,
-            Dafault,
+            Default,
+            Actions,
             Conversation,
             Feeding,
             Sleeping,
-            Cleaning
+            Cleaning,
+            PetState
         }
 
         public static StateMachine<ICommand, State> RegisterStateMachine()
@@ -26,10 +28,33 @@ namespace Dictionchy.Application
 
         private static void RegisterTransitions(StateMachine<ICommand, State> machine)
         {
-            machine.Transitions.RegisterOrChangeTransition(
-                new CreatePetCommand(), 
-                State.Start, 
+            machine.RegisterTransition(
+                State.Start,
+                new CreatePetCommand(),                  
                 State.CreatePet);
+
+            machine.RegisterTransition(
+              State.CreatePet,
+              new PetCreatedCommand(),
+              State.Default);
+
+            machine.RegisterTransition(State.Default,
+                new PetActionsCommand(), State.Actions);
+            machine.RegisterTransition(State.Default,
+                new PetStateCommand(), State.PetState);
+           
+            machine.RegisterTransition(
+                State.Actions,
+                new PetCleanCommand(),
+                State.Cleaning);
+            machine.RegisterTransition(
+                State.Actions,
+                new PetFeedCommand(),
+                State.Feeding);
+            machine.RegisterTransition(
+                State.Actions,
+                new PetSleepCommand(),
+                State.Sleeping);
         }
 
         private static void RegisterStatesActions(StateMachine<ICommand, State> machine)
