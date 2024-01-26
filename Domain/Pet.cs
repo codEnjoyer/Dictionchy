@@ -5,6 +5,10 @@ namespace Dictionchy.Domain
 {
     internal class Pet
     {
+        public int maxSatiety = 100; 
+        public int maxCleanness = 100;
+        public int maxSleepiness = 100;
+
         public long OwnerId { get; }
         public string Name { get; }
 
@@ -12,33 +16,17 @@ namespace Dictionchy.Domain
         public DateTime LastCleanTime { get; set; }
         public DateTime LastSleepTime { get; set; }
 
-        public int Satiety => CalculateState(LastEatTime);
-        public int Cleanness => CalculateState(LastCleanTime);
-        public int Sleepiness => CalculateState(LastSleepTime);
+        public int Satiety => CalculateState(LastEatTime, maxSatiety);
+        public int Cleanness => CalculateState(LastCleanTime, maxCleanness);
+        public int Sleepiness => CalculateState(LastSleepTime, maxSleepiness);
 
-        // ВРЕМЕННЫЙ МЕТОД, ПОТОМ ПЕРЕНЕСТИ
-        public static string GetPath()
-        {
-            var relativePath = @"..\Resources";
-            Directory.CreateDirectory(relativePath);
-            return Path.GetFullPath(relativePath);
-        }
-
-        public static Pet? GetPetByUserId(long userId) => ClassLoader.Load<Pet>(GetPath(), userId.ToString()).Result;
+        public static Pet? GetPetByUserId(long userId) => ClassLoader.Load<Pet>(FileManager.GetPath(), userId.ToString()).Result;
 
         public static Pet CreatePet(string name, long userId)
         {
             var pet = new Pet(name, userId);
-            pet.DumpToFile();
+            FileManager.DumpPetToFile(pet);
             return pet;
-        }
-
-        private void DumpToFile() => ClassDumper.Dump(this, GetPath(), OwnerId.ToString());
-
-        private int CalculateState(DateTime lastStateChangeTime)
-        {
-            var state = 100 - (int)(DateTime.Now - lastStateChangeTime).TotalSeconds;
-            return state > 0 ? state : 0;
         }
 
         public Pet(string name, long ownerId)
@@ -54,30 +42,34 @@ namespace Dictionchy.Domain
 
         public string GetStateString()
         {
-            return $"Состояние {Name}:\n\nСытость: {Satiety}/100\nЧистота: {Cleanness}/100\nБодрость: {Sleepiness}/100";
+            return $"Состояние {Name}:\n\nСытость: {Satiety}/{maxSatiety}\nЧистота: {Cleanness}/{maxCleanness}\nБодрость: {Sleepiness}/{maxSleepiness}";
         }
 
         public void Eat()
-        {
-            LastEatTime = DateTime.Now;
-            DumpToFile();
-        }
-        
-        public void Clean()
-        {
-            LastCleanTime = DateTime.Now;
-            DumpToFile();
-        }
+            => DoPetAction(() => LastEatTime = DateTime.Now);
 
-        public void Sleep(int hours)
-        {
-            LastSleepTime = DateTime.Now;
-            DumpToFile();
-        }
+        public void Clean()
+            => DoPetAction(() => LastCleanTime = DateTime.Now);
+
+        public void Sleep(int hours) 
+            => DoPetAction(() => LastSleepTime = DateTime.Now);
 
         public void Speak()
         {
             throw new NotImplementedException();
         }
+
+        private void DoPetAction(Action petAction)
+        {
+            petAction.Invoke();
+            FileManager.DumpPetToFile(this);
+        }
+
+        private int CalculateState(DateTime lastStateChangeTime, int maxStateValue)
+        {
+            var state = maxStateValue - (int)(DateTime.Now - lastStateChangeTime).TotalHours * 5;
+            return state > 0 ? state : 0;
+        }
+
     }
 }
