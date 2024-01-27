@@ -4,7 +4,7 @@ using SpeechPurifier.Mistakes;
 
 namespace SpeechPurifier.Analyzer;
 
-public partial class TextAnalyzer
+public partial class TextAnalyzer : IAnalyzer<TextAnalyzeResult>
 {
     private readonly TextAnalyzerConfiguration _configuration;
     private readonly Hunspell _spellingAnalyzer;
@@ -39,7 +39,7 @@ public partial class TextAnalyzer
             if (_configuration.BadWords.Contains(word.ToLower()))
                 AddMistake(new BadWordMistake(word), mistakes);
             else if (!_spellingAnalyzer.Spell(word))
-                AddMistake(new SpellingMistake(word), mistakes);
+                AddMistake(new WordSpellingMistake(word), mistakes);
         }
         return mistakes;
     }
