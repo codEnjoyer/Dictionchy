@@ -1,6 +1,6 @@
 ﻿namespace SpeechPurifier.Mistakes;
 
-public class BadWordMistake : IMistake
+public class BadWordMistake : IWordMistake
 {
     public int Weight => 10;
     public string Entry { get; init; }

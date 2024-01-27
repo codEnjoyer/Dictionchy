@@ -47,7 +47,7 @@ public class TextImprover : ISpeechImprover<TextAnalyzeResult>
     {
         {nameof(BadWordMistake), entry => 
             $"\"{entry}\" - это плохое слово. Постарайся заменить его на цензурное."},
-        {nameof(SpellingMistake), entry => 
+        {nameof(WordSpellingMistake), entry => 
             $"Слово \"{entry}\" написано неправильно. " +
             $"Его правильное написание: \"{_wordSpeller.Suggest(entry).First()}\"."}
     };
@@ -56,7 +56,7 @@ public class TextImprover : ISpeechImprover<TextAnalyzeResult>
     {
         {nameof(BadWordMistake), entries => 
             $"\"{string.Join(", ", entries)}\" - это плохие слова. Постарайся заменить их на цензурные."},
-        {nameof(SpellingMistake), MultipleSpellingMistakeReaction
+        {nameof(WordSpellingMistake), MultipleSpellingMistakeReaction
         }
     };
 
