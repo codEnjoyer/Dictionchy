@@ -1,4 +1,7 @@
 using Dictionchy.Application.Commands;
+using Dictionchy.Application.Keyboards;
+using SpeechPurifier.Analyzer;
+using SpeechPurifier.Improver;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
 using Telegram.Bot;
@@ -8,6 +11,8 @@ namespace Dictionchy.Handlers
     public static class UpdateHandler
     {
         private static readonly CommandManager CommandManager = new(); //TODO: добавить в контейнер
+        private static TextAnalyzer _textAnalyzer = new();
+        private static TextImprover _textImprover = new();
         public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
             CancellationToken cancellationToken)
         {
@@ -69,7 +74,18 @@ namespace Dictionchy.Handlers
                 var commandResult = CommandManager.ExecuteCommand(messageText, update);
                 await botClient.SendTextMessageAsync(message!.Chat,
                     commandResult.Message,
-                    replyMarkup: commandResult.ReplyKeyboard?.GetKeyboard());
+                    replyMarkup: commandResult.ReplyKeyboard?.GetKeyboardMarkup());
+            }
+            else
+            {
+                var analyzeResult = _textAnalyzer.Analyze(messageText);
+                var recommendation = _textImprover.GetRecommendation(analyzeResult);
+                var answer = string.IsNullOrEmpty(recommendation)
+                    ? "Супер, расскажешь что-нибудь еще?"
+                    : recommendation;
+                await botClient.SendTextMessageAsync(message!.Chat,
+                    answer,
+                    replyMarkup: new PetKeyboard().GetKeyboardMarkup());
             }
         }
 
@@ -84,7 +100,7 @@ namespace Dictionchy.Handlers
             {
                 await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,
                     callbackResult.Message,
-                    replyMarkup: callbackResult.ReplyKeyboard?.GetKeyboard(),
+                    replyMarkup: callbackResult.ReplyKeyboard?.GetKeyboardMarkup(),
                     cancellationToken: cancellationToken);
             }
         }

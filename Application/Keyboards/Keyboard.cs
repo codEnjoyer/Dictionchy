@@ -4,7 +4,7 @@ namespace Dictionchy.Application.Keyboards
 {
     public abstract class Keyboard
     {
-        public IReplyMarkup GetKeyboard() => Buttons.Length > 0
+        public IReplyMarkup GetKeyboardMarkup() => Buttons.Length > 0
             ? new ReplyKeyboardMarkup(Buttons)
             : new ReplyKeyboardRemove();
 
