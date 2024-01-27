@@ -1,16 +1,13 @@
-using System.Text.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Polling;
 using Dictionchy.Handlers;
-using Dictionchy.Application.Commands;
 
 namespace Dictionchy
 {
-    class Program
+    public static class Program
     {
         private static readonly ITelegramBotClient Bot = new TelegramBotClient(DotEnv.Token);
-        private static readonly CommandManager CommandManager = new();
 
         private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
             CancellationToken cancellationToken)

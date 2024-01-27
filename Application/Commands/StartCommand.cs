@@ -7,7 +7,7 @@ namespace Dictionchy.Application.Commands
     {
         public CommandResult Execute(Update? update = null)
         {
-            return new CommandResult("Приветственное сообщение для замены", new StartKeyboard());
+            return new CommandResult("Привет! Создай питомца, чтобы начать общаться", new StartKeyboard());
         }
     }
 }
