@@ -14,7 +14,7 @@ namespace Dictionchy.Application.Commands
         {
             await Client.SendTextMessageAsync(Context.Message!.Chat,
                     "Привет-привет, чтобы начать пользоваться тебе нужно создать питомца!",
-                    replyMarkup: new StartKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
         }
     }
 }
