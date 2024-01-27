@@ -1,13 +1,24 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
+using State_Machine;
+using Dictionchy.Application.Commands;
 
 namespace Dictionchy.Application.Keyboards
 {
-    public abstract class Keyboard
+    public class KeyboardGenerator
     {
-        public IReplyMarkup GetKeyboard() => Buttons.Length > 0
-            ? new ReplyKeyboardMarkup(Buttons)
+        private StateMachine<ICommand, StatesRegister.State> _machine = StatesRegister.RegisterStateMachine();
+        private CommandManager _commandManager = new CommandManager();
+
+        public IReplyMarkup GetKeyboard(KeyboardButton[] btns) => btns.Length > 0
+            ? new ReplyKeyboardMarkup(btns)
             : new ReplyKeyboardRemove();
 
-        public abstract KeyboardButton[] Buttons { get; }
+        public IReplyMarkup GenerateKeyboard()
+        {
+            var commands = _machine.GetAllTriggers();
+            return GetKeyboard(commands.Select(_commandManager.GetNameByCommand)
+                .Select(x => new KeyboardButton(x))
+                .ToArray());
+        }
     }
 }

@@ -51,5 +51,9 @@
             CurrentState = next;
             return next;
         }
+        public TEvent[] GetAllTriggers()
+        {
+            return Transitions.GetAllTriggers(CurrentState);
+        }
     }
 }

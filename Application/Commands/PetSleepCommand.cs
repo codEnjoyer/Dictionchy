@@ -16,7 +16,7 @@ namespace Dictionchy.Application.Commands
             pet.Sleep(1);
             await Client.SendTextMessageAsync(Context.Message!.Chat,
                     "Вы уложили питомца спать",
-                    replyMarkup: new PetKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
         }
     }
 }

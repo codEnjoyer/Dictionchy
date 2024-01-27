@@ -22,12 +22,6 @@ namespace Dictionchy.Handlers
                         await HandleMessageAsync(botClient, update);
                         return;
                     }
-
-                case UpdateType.CallbackQuery:
-                    {
-                        await HandleCallbackQueryAsync(botClient, update, cancellationToken);
-                        return;
-                    }
             }
         }
 
@@ -36,20 +30,5 @@ namespace Dictionchy.Handlers
             _machine.HandleEvent(CommandManager.GetCommandByContext(botClient, update));
         }
 
-        public static async Task HandleCallbackQueryAsync
-            (ITelegramBotClient botClient, 
-            Update update, 
-            CancellationToken cancellationToken)
-        {
-            var callbackQuery = update.CallbackQuery;
-            var callbackResult = CommandManager.ExecuteCommand(callbackQuery?.Data ?? "/empty");
-            if (callbackQuery is {Message: not null})
-            {
-                await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,
-                    callbackResult.Message,
-                    replyMarkup: callbackResult.ReplyKeyboard?.GetKeyboard(),
-                    cancellationToken: cancellationToken);
-            }
-        }
     }
 }

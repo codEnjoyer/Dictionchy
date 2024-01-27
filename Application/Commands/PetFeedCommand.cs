@@ -20,7 +20,7 @@ namespace Dictionchy.Application.Commands
             pet.Eat();
             await Client.SendTextMessageAsync(Context.Message!.Chat,
                     "Вы покормили питомца",
-                    replyMarkup: new PetKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
         }
     }
 }

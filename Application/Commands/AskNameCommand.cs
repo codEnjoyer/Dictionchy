@@ -23,7 +23,7 @@ namespace Dictionchy.Application.Commands
             {
                 await Client.SendTextMessageAsync(message!.Chat,
                     "У вас уже есть питомец.",
-                    replyMarkup: new PetKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
             }
         }
     }

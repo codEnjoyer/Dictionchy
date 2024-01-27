@@ -19,41 +19,45 @@ namespace Dictionchy.Application.Commands
             {"/clean", new PetCleanCommand()},
             {"/sleep", new PetSleepCommand()},
         };
+        private Dictionary<Type, string> nameByCommand = new()
+        {
+            {typeof(StartCommand), "/start"},
+            {typeof(EmptyCommand), "/empty"},
+            {typeof(AskNameCommand), "/askname"},
+            {typeof(CreatePetCommand), "/createpet"},
+            {typeof(PetStateCommand), "/petstate"},
+            {typeof(PetActionsCommand), "/petactions"},
+            {typeof(PetFeedCommand), "/feed"},
+            {typeof(PetCleanCommand), "/clean"},
+            {typeof(PetSleepCommand), "/sleep"},
+        };
+        private Dictionary<string, string> namesOnRussian = new()
+        {
+            {"/createpet", "создать питомца"},
+            {"/askname", "ввести имя питомца"},
+            {"/help", "помощь"},
+            {"/petactions", "действия с питомцем"},
+            {"/petstate", "состояние питомца"},
+            {"/feed", "покормить"},
+            {"/clean", "помыть"},
+            {"/sleep", "уложить спать"},
+            {"/speak", "поговорить"},
+        };
+
 
         public ICommand GetCommandByContext(ITelegramBotClient client, Update update)
         {
             var message = update.Message;
             var messageText = message?.Text?.ToLower();
-            switch (messageText)
-            {
-                case "создать питомца":
-                    messageText = "/askname";
-                    break;
-                case "помощь":
-                    messageText = "/help";
-                    break;
-                case "действия с питомцем":
-                    messageText = "/petactions";
-                    break;
-                case "состояние питомца":
-                    messageText = "/petstate";
-                    break;
-                case "покормить":
-                    messageText = "/feed";
-                    break;
-                case "помыть":
-                    messageText = "/clean";
-                    break;
-                case "уложить спать":
-                    messageText = "/sleep";
-                    break;
-                case "поговорить":
-                    messageText = "/speak";
-                    break;
-            }
-            if (messageText.StartsWith("/") && commands.ContainsKey(messageText))
-                return commands[messageText];
+            if (namesOnRussian.ContainsKey(messageText))
+                return commands[namesOnRussian[messageText]];
             return null;
+        }
+
+        public string? GetNameByCommand(ICommand command)
+        {
+            var type = command.GetType();
+            return nameByCommand.ContainsKey(type) ? nameByCommand[type] : null;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Dictionchy.Application.Commands
             var pet = Pet.GetPetByUserId(Context.Message.From.Id);
             await Client.SendTextMessageAsync(Context.Message!.Chat,
                     pet.GetStateString(),
-                    replyMarkup: new PetKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
         }
     }
 }

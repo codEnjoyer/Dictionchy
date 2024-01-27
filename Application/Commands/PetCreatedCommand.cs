@@ -17,7 +17,6 @@ namespace Dictionchy.Application.Commands
             await Client.SendTextMessageAsync(message!.Chat,
                 "Ваш питомец успешно создан!", 
                 replyMarkup: new PetKeyboard().GetKeyboard());
-
         }
     }
 }

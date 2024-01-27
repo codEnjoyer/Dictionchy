@@ -14,16 +14,6 @@ namespace Dictionchy.Application.Commands
 {
     internal class PetCleanCommand : ICommand
     {
-        //public CommandResult Execute(Update? update = null)
-        //{
-        //    var pet = Pet.GetPetByUserId(update.Message.From.Id);
-        //    if (pet != null)
-        //    {
-        //        pet.Clean();
-        //        return new CommandResult("Вы умыли питомца", new PetKeyboard());
-        //    }
-        //    return new CommandResult("У вас нет питомца", new StartKeyboard());
-        //}
         public Update Context { get; set; }
         public ITelegramBotClient Client { get; set; }
 
@@ -34,7 +24,7 @@ namespace Dictionchy.Application.Commands
             pet.Clean();
             await Client.SendTextMessageAsync(message.Chat,
                     "Вы умыли питомца",
-                    replyMarkup: new PetKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
         }
     }
 }

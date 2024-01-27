@@ -20,7 +20,7 @@ namespace Dictionchy.Application.Commands
             var message = Context.Message;
             await Client.SendTextMessageAsync(message!.Chat,
                     "Выберите действие с питомцем",
-                    replyMarkup: new PetActionsKeyboard().GetKeyboard());
+                    replyMarkup: KeyboardGenerator.GenerateKeyboard());
         }
     }
 }
