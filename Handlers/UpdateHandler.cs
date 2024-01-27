@@ -55,9 +55,6 @@ namespace Dictionchy.Handlers
                 case "уложить спать":
                     messageText = "/sleep";
                     break;
-                case "поговорить":
-                    messageText = "/speak";
-                    break;
             }
 
             var isCommand = messageText.StartsWith("/");

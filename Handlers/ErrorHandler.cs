@@ -17,7 +17,7 @@ namespace Dictionchy.Handlers
         {
             if (exception is NotExistCommandException)
             {
-                return botClient.SendTextMessageAsync((exception as NotExistCommandException).Chat,
+                botClient.SendTextMessageAsync((exception as NotExistCommandException).Chat,
                 "Эта функциональность пока не реализована");
             }
             return Task.CompletedTask;
