@@ -26,6 +26,8 @@
 В скором времени будет добавлен в этот проект. Анализирует текст на наличие
 ругательных или неправильно написанных слов.
 
+UPD: Проект SpeechPurifier был добавлен.
+
 ## Точки расширения
 
 Добавление новых [команд](https://github.com/codEnjoyer/Dictionchy/blob/master/Application/Commands/ICommand.cs)
